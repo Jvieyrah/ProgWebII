@@ -37,5 +37,5 @@ public class User {
   // 'mappedBy' indica o campo na classe Measures que detém a chave estrangeira.
   // 'CascadeType.ALL' fará com que medidas sejam excluídas se o usuário for excluído.
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Measures> measures;
+  private List<Measure> measures;
 }

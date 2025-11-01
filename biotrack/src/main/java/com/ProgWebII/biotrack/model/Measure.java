@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_measures")
+@Table(name = "tb_measure")
 @Data // Gera Getters, Setters, toString, equals e hashCode
 @NoArgsConstructor // Construtor sem argumentos
 @AllArgsConstructor // Construtor com todos os argumentos
-public class Measures {
+public class Measure {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
