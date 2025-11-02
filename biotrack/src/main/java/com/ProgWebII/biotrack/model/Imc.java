@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class Imc {
 
     @Autowired
-    private MeasureRepository measureRepository;
+    private MeasureRepository measuresRepository;
 
     public Double calcularImc(Double weightKg, Double heightCm) {
         if (weightKg == null || heightCm == null || weightKg <= 0 || heightCm <= 0) {
@@ -36,10 +36,10 @@ public class Imc {
     }
     
     public Double obterImcUsuario(Long userId) {
-        Measure medidaMaisRecente = measureRepository.findTopByUserIdOrderByMeasurementDateDesc(userId);
+        var medidaMaisRecente = measuresRepository.findTopByUserIdOrderByMeasurementDateDesc(userId);
         
-        if (medidaMaisRecente == null ||
-            medidaMaisRecente.getWeightKg() == null ||
+        if (medidaMaisRecente == null || 
+            medidaMaisRecente.getWeightKg() == null || 
             medidaMaisRecente.getHeightCm() == null) {
             return null;
         }
