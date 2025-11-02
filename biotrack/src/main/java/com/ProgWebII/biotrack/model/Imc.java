@@ -38,8 +38,8 @@ public class Imc {
     public Double obterImcUsuario(Long userId) {
         Measure medidaMaisRecente = measureRepository.findTopByUserIdOrderByMeasurementDateDesc(userId);
         
-        if (medidaMaisRecente == null || 
-            medidaMaisRecente.getWeightKg() == null || 
+        if (medidaMaisRecente == null ||
+            medidaMaisRecente.getWeightKg() == null ||
             medidaMaisRecente.getHeightCm() == null) {
             return null;
         }

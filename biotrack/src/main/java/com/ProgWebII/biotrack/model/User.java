@@ -3,15 +3,21 @@ package com.ProgWebII.biotrack.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_users") // Boa prática para evitar conflitos com palavras reservadas
 @Data // Gera Getters, Setters, toString, equals e hashCode
+@Builder // Permite o uso do padrão Builder para criar instâncias
 @NoArgsConstructor // Construtor sem argumentos
 @AllArgsConstructor // Construtor com todos os argumentos
+@Getter
+@Setter
 public class User {
 
   @Id
