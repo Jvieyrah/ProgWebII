@@ -37,5 +37,17 @@ public class UsuarioController {
         
         return ResponseEntity.ok(usuariosFiltrados);
     }
-}
+
+    @GetMapping
+    public ResponseEntity<List<User>> listarTodosUsuarios() {
+        List<User> usuarios = userRepository.findAll();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> buscarUsuarioPorId(@PathVariable Long id) {
+        return userRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }}
 

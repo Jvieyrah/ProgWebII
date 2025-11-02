@@ -1,6 +1,6 @@
 package com.ProgWebII.biotrack.model;
 
-import com.ProgWebII.biotrack.repository.MeasuresRepository;
+import com.ProgWebII.biotrack.repository.MeasureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class Imc {
 
     @Autowired
-    private MeasuresRepository measuresRepository;
+    private MeasureRepository measuresRepository;
 
     public Double calcularImc(Double weightKg, Double heightCm) {
         if (weightKg == null || heightCm == null || weightKg <= 0 || heightCm <= 0) {
