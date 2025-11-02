@@ -1,6 +1,6 @@
 package com.ProgWebII.biotrack.repository; // Certifique-se de que este pacote corresponde ao seu projeto
 
-import com.ProgWebII.biotrack.model.Measures;
+import com.ProgWebII.biotrack.model.Measure;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * Estende JpaRepository para herdar métodos CRUD básicos (save, findById, findAll, delete, etc.).
  */
 @Repository
-public interface MeasuresRepository extends JpaRepository<Measures, Long> {
+public interface MeasuresRepository extends JpaRepository<Measure, Long> {
 
   /**
    * Exemplo de método de consulta personalizado.
@@ -21,7 +21,7 @@ public interface MeasuresRepository extends JpaRepository<Measures, Long> {
    * @param userId O ID da chave primária do Usuário.
    * @return Uma lista de objetos Measures.
    */
-  List<Measures> findByUserIdOrderByMeasurementDateDesc(Long userId);
+  List<Measure> findByUserIdOrderByMeasurementDateDesc(Long userId);
 
   /**
    * Encontra a medida mais recente para um usuário específico.
@@ -29,5 +29,5 @@ public interface MeasuresRepository extends JpaRepository<Measures, Long> {
    * @param userId O ID da chave primária do Usuário.
    * @return O objeto Measures mais recente ou null se não for encontrado.
    */
-  Measures findTopByUserIdOrderByMeasurementDateDesc(Long userId);
+  Measure findTopByUserIdOrderByMeasurementDateDesc(Long userId);
 }
