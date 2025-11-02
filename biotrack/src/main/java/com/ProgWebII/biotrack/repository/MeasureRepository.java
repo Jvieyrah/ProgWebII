@@ -11,7 +11,7 @@ import java.util.List;
  * Estende JpaRepository para herdar métodos CRUD básicos (save, findById, findAll, delete, etc.).
  */
 @Repository
-public interface MeasuresRepository extends JpaRepository<Measure, Long> {
+public interface MeasureRepository extends JpaRepository<Measure, Long> {
 
   /**
    * Exemplo de método de consulta personalizado.
