@@ -34,7 +34,7 @@ public class UsuarioController {
     @GetMapping("/filtro-imc")
     public ResponseEntity<List<User>> filtrarUsuariosPorImc(@RequestParam String faixa) {
         List<User> todosUsuarios = userRepository.findAll();
-        
+
         List<User> usuariosFiltrados = todosUsuarios.stream()
             .filter(user -> {
                 Double imcUsuario = imc.obterImcUsuario(user.getId());
@@ -45,7 +45,7 @@ public class UsuarioController {
                 return faixaUsuario != null && faixaUsuario.equalsIgnoreCase(faixa);
             })
             .collect(Collectors.toList());
-        
+
         return ResponseEntity.ok(usuariosFiltrados);
     }
 
