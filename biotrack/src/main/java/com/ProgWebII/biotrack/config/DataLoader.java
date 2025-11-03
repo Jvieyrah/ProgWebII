@@ -30,7 +30,7 @@ public class DataLoader implements CommandLineRunner {
             return;
         }
 
-        // 🧍 Usuários
+        //Usuários
         User ana = new User(null, "Ana Costa", LocalDate.of(1992, 5, 10), "01001-000",
                 "ana.costa@email.com", "123456", null);
         User joao = new User(null, "João Silva", LocalDate.of(1988, 3, 22), "01310-200",
