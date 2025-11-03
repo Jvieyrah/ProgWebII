@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data // Gera Getters, Setters, toString, equals e hashCode
 @NoArgsConstructor // Construtor sem argumentos
 @AllArgsConstructor // Construtor com todos os argumentos
-public class Measures {
+public class Measure {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
