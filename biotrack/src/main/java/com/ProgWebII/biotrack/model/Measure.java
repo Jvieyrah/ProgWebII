@@ -2,6 +2,7 @@ package com.ProgWebII.biotrack.model; // Ajuste o pacote conforme a sua estrutur
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_measure")
 @Data // Gera Getters, Setters, toString, equals e hashCode
+@Builder // Permite o uso do padrão Builder para criar instâncias
 @NoArgsConstructor // Construtor sem argumentos
 @AllArgsConstructor // Construtor com todos os argumentos
 public class Measure {

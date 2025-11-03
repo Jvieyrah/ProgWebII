@@ -16,8 +16,6 @@ import lombok.Setter;
 @Builder // Permite o uso do padrão Builder para criar instâncias
 @NoArgsConstructor // Construtor sem argumentos
 @AllArgsConstructor // Construtor com todos os argumentos
-@Getter
-@Setter
 public class User {
 
   @Id
