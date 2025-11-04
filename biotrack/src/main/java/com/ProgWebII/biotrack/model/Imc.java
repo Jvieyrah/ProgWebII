@@ -38,13 +38,14 @@ public class Imc {
     public Double obterImcUsuario(Long userId) {
         var medidaMaisRecente = measuresRepository.findTopByUserIdOrderByMeasurementDateDesc(userId);
         
-        if (medidaMaisRecente == null || 
-            medidaMaisRecente.getWeightKg() == null || 
+        if (medidaMaisRecente == null ||
+            medidaMaisRecente.getWeightKg() == null ||
             medidaMaisRecente.getHeightCm() == null) {
             return null;
         }
-        
+
         return calcularImc(medidaMaisRecente.getWeightKg(), medidaMaisRecente.getHeightCm());
+
     }
 }
 

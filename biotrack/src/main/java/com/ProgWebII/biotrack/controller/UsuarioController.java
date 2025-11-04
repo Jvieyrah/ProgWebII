@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ProgWebII.biotrack.dto.request.UserRequest;
+
 @RestController
-@RequestMapping("/api/v1/usuarios")/*
+@RequestMapping("/usuarios")/*
 mapeamento de rota base (ou endpoint base) de um controller REST no Spring Boot.*/
 public class UsuarioController {
 
@@ -29,6 +31,11 @@ public class UsuarioController {
         this.imc = imc;
     }
 
+    @PostMapping()
+    public ResponseEntity<String> criarUsuario(@RequestBody UserRequest userRequest) {
+        userService.createUser(userRequest);
+        return ResponseEntity.ok("Usuário criado com sucesso!");
+    }
     @GetMapping("/filtro-imc")
     public ResponseEntity<List<User>> filtrarUsuariosPorImc(@RequestParam String faixa) {
         List<User> todosUsuarios = userRepository.findAll();
