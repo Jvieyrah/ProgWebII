@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios/{idUsuario}/medidas")
+@RequestMapping("/medidas")
 public class MeasureController {
 
   private final MeasureService measureService;
@@ -19,7 +19,7 @@ public class MeasureController {
   }
 
   //POST /api/v1/usuarios/{idUsuario}/medidas → cria uma nova medida para o usuário existente
-  @PostMapping("/{usuarioId}/medidas")
+  @PostMapping("/{userId}")
   public ResponseEntity<String> createMeasure(@RequestBody MeasureRequest measureRequest, @PathVariable Long userId) {
     measureService.CreateMeasure(measureRequest, userId);
     return ResponseEntity.ok("Medida criada com sucesso!");

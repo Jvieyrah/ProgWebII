@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import com.ProgWebII.biotrack.dto.request.UserRequest;
 
 @RestController
-@RequestMapping("/api/v1/usuarios")/*
+@RequestMapping("/usuarios")/*
 mapeamento de rota base (ou endpoint base) de um controller REST no Spring Boot.*/
 public class UsuarioController {
 
