@@ -1,8 +1,8 @@
-package com.ProgWebII.biotrack.dto;
+package com.ProgWebII.biotrack.dto.response;
 
 import java.time.LocalDate;
 
-public record UsuarioSemMedidasResponse(
+public record ListarTodosUsuariosResponse(
         Long id,
         String name,
         LocalDate birthDate,

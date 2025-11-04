@@ -1,6 +1,6 @@
 package com.ProgWebII.biotrack.service;
 
-import com.ProgWebII.biotrack.dto.MedidaResponse;
+import com.ProgWebII.biotrack.dto.response.MedidaResponse;
 import com.ProgWebII.biotrack.dto.request.MeasureRequest;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;

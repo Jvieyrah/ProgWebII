@@ -1,9 +1,9 @@
 package com.ProgWebII.biotrack.controller;
 
-import com.ProgWebII.biotrack.dto.BuscarUsuarioPorIdResponse;
-import com.ProgWebII.biotrack.dto.ListarTodosUsuariosResponse;
-import com.ProgWebII.biotrack.dto.UsuarioResponse;
-import com.ProgWebII.biotrack.dto.UsuarioSemMedidasResponse;
+import com.ProgWebII.biotrack.dto.response.BuscarUsuarioPorIdResponse;
+import com.ProgWebII.biotrack.dto.response.ListarTodosUsuariosResponse;
+import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
+import com.ProgWebII.biotrack.dto.response.UsuarioSemMedidasResponse;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.model.Imc;
 import com.ProgWebII.biotrack.repository.UserRepository;
