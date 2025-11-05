@@ -190,6 +190,44 @@ public class UserService {
         }
     }
 
+    // Atualiza um usuário existente
+    public void atualizarUsuario(Long id, UserRequest userRequest) {
+        validarId(id, "ID do usuário");
+        
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + id));
+        
+        // Atualiza os campos do usuário com os novos valores
+        user.setName(userRequest.name());
+        user.setBirthDate(userRequest.birthDate());
+        user.setZipCode(userRequest.zipCode());
+        user.setEmail(userRequest.email());
+        
+        // Se a senha foi fornecida, atualiza a senha com hash
+        if (userRequest.password() != null && !userRequest.password().isBlank()) {
+            user.setPassword(hashPassword(userRequest.password()));
+        }
+        
+        // Valida os campos obrigatórios
+        validarCamposObrigatorios(user);
+        
+        // Salva as alterações
+        userRepository.save(user);
+    }
+    
+    // Remove um usuário pelo ID
+    public void removerUsuario(Long id) {
+        validarId(id, "ID do usuário");
+        
+        // Verifica se o usuário existe
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException("Usuário não encontrado com o ID: " + id);
+        }
+        
+        // Remove o usuário
+        userRepository.deleteById(id);
+    }
+    
     private void validarCamposObrigatorios(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             throw new IllegalArgumentException("O nome do usuário é obrigatório.");

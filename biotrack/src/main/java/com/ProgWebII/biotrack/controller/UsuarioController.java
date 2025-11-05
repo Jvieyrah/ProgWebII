@@ -83,5 +83,21 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> trazerUsuarioComUltimaMedida(@PathVariable Long id) {
         return ResponseEntity.ok(userService.trazerUsuarioPorIdComUltimaMedida(id));
     }
+    
+    // PUT /usuarios/{id} → atualiza completamente um usuário
+    @PutMapping("/{id}")
+    public ResponseEntity<String> atualizarUsuario(
+            @PathVariable Long id,
+            @RequestBody UserRequest userRequest) {
+        userService.atualizarUsuario(id, userRequest);
+        return ResponseEntity.ok("Usuário atualizado com sucesso!");
+    }
+    
+    // DELETE /usuarios/{id} → remove um usuário
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> removerUsuario(@PathVariable Long id) {
+        userService.removerUsuario(id);
+        return ResponseEntity.ok("Usuário removido com sucesso!");
+    }
 }
 
