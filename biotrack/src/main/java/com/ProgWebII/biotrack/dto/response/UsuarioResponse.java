@@ -1,12 +1,13 @@
-package com.ProgWebII.biotrack.dto;
+package com.ProgWebII.biotrack.dto.response;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public record UsuarioComUltimaMedidaResponse(
+public record UsuarioResponse(
         Long id,
         String name,
         LocalDate birthDate,
         String zipCode,
         String email,
-        MedidaResponse ultimaMedida
+        List<MedidaResponse> medidas
 ) {}

@@ -6,6 +6,7 @@ import com.ProgWebII.biotrack.repository.MeasureRepository;
 import com.ProgWebII.biotrack.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -16,10 +17,12 @@ public class DataLoader implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final MeasureRepository measureRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataLoader(UserRepository userRepository, MeasureRepository measureRepository) {
+    public DataLoader(UserRepository userRepository, MeasureRepository measureRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.measureRepository = measureRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,12 +34,13 @@ public class DataLoader implements CommandLineRunner {
         }
 
         //Usuários
+        //gerando o hash através do passwordEncoder via injeção de deendencias pelo construtor
         User ana = new User(null, "Ana Costa", LocalDate.of(1992, 5, 10), "01001-000",
-                "ana.costa@email.com", "123456", null);
+                "ana.costa@email.com", passwordEncoder.encode("123456"), null);
         User joao = new User(null, "João Silva", LocalDate.of(1988, 3, 22), "01310-200",
-                "joao.silva@email.com", "123456", null);
+                "joao.silva@email.com", passwordEncoder.encode("123456"), null);
         User carla = new User(null, "Carla Mendes", LocalDate.of(1995, 11, 5), "04045-100",
-                "carla.mendes@email.com", "123456", null);
+                "carla.mendes@email.com", passwordEncoder.encode("123456") , null);
 
         userRepository.saveAll(Arrays.asList(ana, joao, carla));
 
