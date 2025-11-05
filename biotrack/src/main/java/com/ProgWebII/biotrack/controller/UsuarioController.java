@@ -1,10 +1,11 @@
 package com.ProgWebII.biotrack.controller;
 
-import com.ProgWebII.biotrack.dto.BuscarUsuarioPorIdResponse;
-import com.ProgWebII.biotrack.dto.ListarTodosUsuariosResponse;
-import com.ProgWebII.biotrack.dto.UsuarioResponse;
-import com.ProgWebII.biotrack.dto.UsuarioSemMedidasResponse;
-import com.ProgWebII.biotrack.model.User;
+import com.ProgWebII.biotrack.controller.documentation.UsuarioControllerDocs;
+import com.ProgWebII.biotrack.dto.response.BuscarUsuarioPorIdResponse;
+import com.ProgWebII.biotrack.dto.response.ListarTodosUsuariosResponse;
+import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
+import com.ProgWebII.biotrack.dto.response.UsuarioSemMedidasResponse;
+import com.ProgWebII.biotrack.mapper.UsuarioMapper;
 import com.ProgWebII.biotrack.model.Imc;
 import com.ProgWebII.biotrack.repository.UserRepository;
 import com.ProgWebII.biotrack.service.UserService;
@@ -12,23 +13,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ProgWebII.biotrack.dto.request.UserRequest;
 
 @RestController
 @RequestMapping("/usuarios")/*
 mapeamento de rota base (ou endpoint base) de um controller REST no Spring Boot.*/
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerDocs {
 
     private final UserRepository userRepository;
     private final UserService userService;
     private final Imc imc;
+    private final UsuarioMapper usuarioMapper;
 
-    public UsuarioController(UserRepository userRepository, UserService userService, Imc imc) {
+    public UsuarioController(UserRepository userRepository, UserService userService, Imc imc, UsuarioMapper usuarioMapper) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.imc = imc;
+        this.usuarioMapper = usuarioMapper;
     }
 
     @PostMapping()
@@ -36,20 +38,21 @@ public class UsuarioController {
         userService.createUser(userRequest);
         return ResponseEntity.ok("Usuário criado com sucesso!");
     }
-    @GetMapping("/filtro-imc")
-    public ResponseEntity<List<User>> filtrarUsuariosPorImc(@RequestParam String faixa) {
-        List<User> todosUsuarios = userRepository.findAll();
 
-        List<User> usuariosFiltrados = todosUsuarios.stream()
+    @GetMapping("/filtro-imc")
+    public ResponseEntity<List<UsuarioResponse>> filtrarUsuariosPorImc(@RequestParam String faixa) {
+
+        List<UsuarioResponse> usuariosFiltrados = userRepository.findAll().stream()
                 .filter(user -> {
                     Double imcUsuario = imc.obterImcUsuario(user.getId());
-                    if (imcUsuario == null) {
-                        return false;
-                    }
+                    if (imcUsuario == null) return false;
+
                     String faixaUsuario = imc.classificarFaixaImc(imcUsuario);
                     return faixaUsuario != null && faixaUsuario.equalsIgnoreCase(faixa);
                 })
-                .collect(Collectors.toList());
+                .map(usuarioMapper::toResponse)
+                .sorted((a, b) -> a.id().compareTo(b.id()))
+                .toList();
 
         return ResponseEntity.ok(usuariosFiltrados);
     }
@@ -69,7 +72,7 @@ public class UsuarioController {
     //GET /usuarios/sem-medidas → lista todos os usuários sem medidas
     @GetMapping("/sem-medidas")
     public ResponseEntity<List<UsuarioSemMedidasResponse>> listarTodosSemMedidas() {
-        return ResponseEntity.ok(userService.listarTodosSemMedidas());
+        return ResponseEntity.ok(userService.listarUsuariosSemMedidas());
     }
 
     //GET /usuarios/{id}/todas-medidas → usuário + todas as medidas
@@ -83,6 +86,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> trazerUsuarioComUltimaMedida(@PathVariable Long id) {
         return ResponseEntity.ok(userService.trazerUsuarioPorIdComUltimaMedida(id));
     }
+
     
     // PUT /usuarios/{id} → atualiza completamente um usuário
     @PutMapping("/{id}")

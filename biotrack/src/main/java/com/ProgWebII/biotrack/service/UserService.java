@@ -1,7 +1,8 @@
 package com.ProgWebII.biotrack.service;
 
-import com.ProgWebII.biotrack.dto.*;
 import com.ProgWebII.biotrack.dto.request.UserRequest;
+import com.ProgWebII.biotrack.dto.response.*;
+import com.ProgWebII.biotrack.mapper.UsuarioMapper;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.repository.UserRepository;
@@ -18,11 +19,12 @@ import java.util.Objects;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final UsuarioMapper  usuarioMapper;
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.usuarioMapper = usuarioMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -82,23 +84,15 @@ public class UserService {
                 user.getEmail()
         );
     }
-
-    //Lista todos os usuários sem medidas
-    public List<UsuarioSemMedidasResponse> listarTodosSemMedidas() {
-        List<User> usuarios = userRepository.findAll();
-
-        if (usuarios.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum usuário encontrado.");
-        }
-
-        return usuarios.stream()
-                .filter(Objects::nonNull)
-                .map(u -> new UsuarioSemMedidasResponse(
-                        u.getId(),
-                        u.getName(),
-                        u.getBirthDate(),
-                        u.getZipCode(),
-                        u.getEmail()
+    public List<UsuarioSemMedidasResponse> listarUsuariosSemMedidas() {
+        return userRepository.findUsersWithoutMeasures()
+                .stream()
+                .map(user -> new UsuarioSemMedidasResponse(
+                        user.getId(),
+                        user.getName(),
+                        user.getBirthDate(),
+                        user.getZipCode(),
+                        user.getEmail()
                 ))
                 .toList();
     }

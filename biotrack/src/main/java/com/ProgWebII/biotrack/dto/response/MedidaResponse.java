@@ -1,6 +1,5 @@
-package com.ProgWebII.biotrack.dto;
+package com.ProgWebII.biotrack.dto.response;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record MedidaResponse(
