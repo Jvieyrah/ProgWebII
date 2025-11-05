@@ -5,7 +5,6 @@ import com.ProgWebII.biotrack.dto.response.BuscarUsuarioPorIdResponse;
 import com.ProgWebII.biotrack.dto.response.ListarTodosUsuariosResponse;
 import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
 import com.ProgWebII.biotrack.dto.response.UsuarioSemMedidasResponse;
-import com.ProgWebII.biotrack.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +32,7 @@ public interface UsuarioControllerDocs {
             @ApiResponse(responseCode = "200", description = "Lista de usuários filtrada por IMC.")
     })
     @GetMapping("/filtro-imc")
-    ResponseEntity<List<User>> filtrarUsuariosPorImc(@Parameter(description = "Faixa do IMC para filtro") @RequestParam String faixa);
+    ResponseEntity<List<UsuarioResponse>> filtrarUsuariosPorImc(@Parameter(description = "Faixa do IMC para filtro") @RequestParam String faixa);
 
     @Operation(summary = "Lista todos os usuários sem medidas.", description = "Retorna uma lista de todos os usuários cadastrados sem suas medidas.")
     @ApiResponses(value = {
