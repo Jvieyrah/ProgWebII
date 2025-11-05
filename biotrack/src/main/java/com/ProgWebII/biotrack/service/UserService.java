@@ -1,8 +1,8 @@
 package com.ProgWebII.biotrack.service;
 
-import com.ProgWebII.biotrack.dto.*;
 import com.ProgWebII.biotrack.dto.request.UserRequest;
 import com.ProgWebII.biotrack.dto.request.UserPatchRequest;
+import com.ProgWebII.biotrack.dto.response.*;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.repository.UserRepository;
@@ -209,20 +209,13 @@ public class UserService {
     }
     
     // Atualiza parcialmente um usuário existente (PATCH)
-<<<<<<< HEAD
-    public void atualizarUsuarioParcialmente(Long id, UserPatchRequest userPatchRequest) {
-=======
     public void atualizarParcialUsuario(Long id, UserPatchRequest userPatchRequest) {
->>>>>>> develop
         validarId(id, "ID do usuário");
         
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + id));
         
-<<<<<<< HEAD
-=======
         // Atualiza apenas os campos fornecidos (não nulos)
->>>>>>> develop
         if (userPatchRequest.name() != null && !userPatchRequest.name().isBlank()) {
             user.setName(userPatchRequest.name());
         }
@@ -239,23 +232,15 @@ public class UserService {
             user.setEmail(userPatchRequest.email());
         }
         
-<<<<<<< HEAD
-=======
         // Se a senha foi fornecida, atualiza a senha com hash
->>>>>>> develop
         if (userPatchRequest.password() != null && !userPatchRequest.password().isBlank()) {
             user.setPassword(hashPassword(userPatchRequest.password()));
         }
         
-<<<<<<< HEAD
-        validarCamposObrigatorios(user);
-        
-=======
         // Valida os campos obrigatórios após a atualização parcial
         validarCamposObrigatorios(user);
         
         // Salva as alterações
->>>>>>> develop
         userRepository.save(user);
     }
     
