@@ -1,6 +1,6 @@
 package com.ProgWebII.biotrack.service;
 
-import com.ProgWebII.biotrack.dto.MedidaResponse;
+import com.ProgWebII.biotrack.dto.response.MedidaResponse;
 import com.ProgWebII.biotrack.dto.request.MeasureRequest;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
@@ -65,27 +65,67 @@ public class MeasureService {
 
     public void CreateMeasure(MeasureRequest measureRequest, Long userId) {
         try{
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
-        Measure measure = Measure.builder()
-                .measurementDate(measureRequest.measurementDate())
-                .weightKg(measureRequest.weightKg())
-                .heightCm(measureRequest.heightCm())
-                .waistCm(measureRequest.waistCm())
-                .hipCm(measureRequest.hipCm())
-                .chestCm(measureRequest.chestCm())
-                .armRightCm(measureRequest.armRightCm())
-                .armLeftCm(measureRequest.armLeftCm())
-                .thighRightCm(measureRequest.thighRightCm())
-                .thighLeftCm(measureRequest.thighLeftCm())
-                .bodyFatPercentage(measureRequest.bodyFatPercentage())
-                .user(user)
-                .build();
-        measureRepository.save(measure);
+            Measure measure = Measure.builder()
+                    .measurementDate(measureRequest.measurementDate())
+                    .weightKg(measureRequest.weightKg())
+                    .heightCm(measureRequest.heightCm())
+                    .waistCm(measureRequest.waistCm())
+                    .hipCm(measureRequest.hipCm())
+                    .chestCm(measureRequest.chestCm())
+                    .armRightCm(measureRequest.armRightCm())
+                    .armLeftCm(measureRequest.armLeftCm())
+                    .thighRightCm(measureRequest.thighRightCm())
+                    .thighLeftCm(measureRequest.thighLeftCm())
+                    .bodyFatPercentage(measureRequest.bodyFatPercentage())
+                    .user(user)
+                    .build();
+            measureRepository.save(measure);
         } catch(Exception e){
             throw new RuntimeException("Erro ao criar medida: " + e.getMessage());
         }
-
+    }
+    
+    // Atualiza uma medida existente
+    public void atualizarMedida(Long medidaId, MeasureRequest medidaRequest) {
+        try {
+            Measure medida = measureRepository.findById(medidaId)
+                    .orElseThrow(() -> new EntityNotFoundException("Medida não encontrada com o ID: " + medidaId));
+            
+            // Atualiza os campos da medida com os novos valores
+            medida.setMeasurementDate(medidaRequest.measurementDate());
+            medida.setWeightKg(medidaRequest.weightKg());
+            medida.setHeightCm(medidaRequest.heightCm());
+            medida.setWaistCm(medidaRequest.waistCm());
+            medida.setHipCm(medidaRequest.hipCm());
+            medida.setChestCm(medidaRequest.chestCm());
+            medida.setArmRightCm(medidaRequest.armRightCm());
+            medida.setArmLeftCm(medidaRequest.armLeftCm());
+            medida.setThighRightCm(medidaRequest.thighRightCm());
+            medida.setThighLeftCm(medidaRequest.thighLeftCm());
+            medida.setBodyFatPercentage(medidaRequest.bodyFatPercentage());
+            
+            // Salva as alterações
+            measureRepository.save(medida);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar medida: " + e.getMessage());
+        }
+    }
+    
+    // Remove uma medida pelo ID
+    public void removerMedida(Long medidaId) {
+        try {
+            // Verifica se a medida existe
+            if (!measureRepository.existsById(medidaId)) {
+                throw new EntityNotFoundException("Medida não encontrada com o ID: " + medidaId);
+            }
+            
+            // Remove a medida
+            measureRepository.deleteById(medidaId);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao remover medida: " + e.getMessage());
+        }
     }
 }
