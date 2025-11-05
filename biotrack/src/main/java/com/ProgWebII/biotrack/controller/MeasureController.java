@@ -1,6 +1,6 @@
 package com.ProgWebII.biotrack.controller;
 
-import com.ProgWebII.biotrack.dto.MedidaResponse;
+import com.ProgWebII.biotrack.dto.response.MedidaResponse;
 import com.ProgWebII.biotrack.dto.request.MeasureRequest;
 import com.ProgWebII.biotrack.service.MeasureService;
 import org.springframework.http.ResponseEntity;
