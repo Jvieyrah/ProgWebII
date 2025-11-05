@@ -4,6 +4,7 @@ import com.ProgWebII.biotrack.dto.response.BuscarUsuarioPorIdResponse;
 import com.ProgWebII.biotrack.dto.response.ListarTodosUsuariosResponse;
 import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
 import com.ProgWebII.biotrack.dto.response.UsuarioSemMedidasResponse;
+import com.ProgWebII.biotrack.mapper.UsuarioMapper;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.model.Imc;
 import com.ProgWebII.biotrack.repository.UserRepository;
@@ -24,11 +25,13 @@ public class UsuarioController {
     private final UserRepository userRepository;
     private final UserService userService;
     private final Imc imc;
+    private final UsuarioMapper usuarioMapper;
 
-    public UsuarioController(UserRepository userRepository, UserService userService, Imc imc) {
+    public UsuarioController(UserRepository userRepository, UserService userService, Imc imc, UsuarioMapper usuarioMapper) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.imc = imc;
+        this.usuarioMapper = usuarioMapper;
     }
 
     @PostMapping()
@@ -36,20 +39,21 @@ public class UsuarioController {
         userService.createUser(userRequest);
         return ResponseEntity.ok("Usuário criado com sucesso!");
     }
-    @GetMapping("/filtro-imc")
-    public ResponseEntity<List<User>> filtrarUsuariosPorImc(@RequestParam String faixa) {
-        List<User> todosUsuarios = userRepository.findAll();
 
-        List<User> usuariosFiltrados = todosUsuarios.stream()
+    @GetMapping("/filtro-imc")
+    public ResponseEntity<List<UsuarioResponse>> filtrarUsuariosPorImc(@RequestParam String faixa) {
+
+        List<UsuarioResponse> usuariosFiltrados = userRepository.findAll().stream()
                 .filter(user -> {
                     Double imcUsuario = imc.obterImcUsuario(user.getId());
-                    if (imcUsuario == null) {
-                        return false;
-                    }
+                    if (imcUsuario == null) return false;
+
                     String faixaUsuario = imc.classificarFaixaImc(imcUsuario);
                     return faixaUsuario != null && faixaUsuario.equalsIgnoreCase(faixa);
                 })
-                .collect(Collectors.toList());
+                .map(usuarioMapper::toResponse)
+                .sorted((a, b) -> a.id().compareTo(b.id()))
+                .toList();
 
         return ResponseEntity.ok(usuariosFiltrados);
     }

@@ -2,6 +2,7 @@ package com.ProgWebII.biotrack.service;
 
 import com.ProgWebII.biotrack.dto.request.UserRequest;
 import com.ProgWebII.biotrack.dto.response.*;
+import com.ProgWebII.biotrack.mapper.UsuarioMapper;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.repository.UserRepository;
@@ -18,11 +19,12 @@ import java.util.Objects;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final UsuarioMapper  usuarioMapper;
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.usuarioMapper = usuarioMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
