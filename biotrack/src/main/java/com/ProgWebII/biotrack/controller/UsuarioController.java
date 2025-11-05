@@ -1,10 +1,9 @@
 package com.ProgWebII.biotrack.controller;
 
-import com.ProgWebII.biotrack.dto.response.BuscarUsuarioPorIdResponse;
-import com.ProgWebII.biotrack.dto.response.ListarTodosUsuariosResponse;
-import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
-import com.ProgWebII.biotrack.dto.response.UsuarioSemMedidasResponse;
-import com.ProgWebII.biotrack.mapper.UsuarioMapper;
+import com.ProgWebII.biotrack.dto.BuscarUsuarioPorIdResponse;
+import com.ProgWebII.biotrack.dto.ListarTodosUsuariosResponse;
+import com.ProgWebII.biotrack.dto.UsuarioResponse;
+import com.ProgWebII.biotrack.dto.UsuarioSemMedidasResponse;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.model.Imc;
 import com.ProgWebII.biotrack.repository.UserRepository;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ProgWebII.biotrack.dto.request.UserRequest;
+import com.ProgWebII.biotrack.dto.request.UserPatchRequest;
 
 @RestController
 @RequestMapping("/usuarios")/*
@@ -25,13 +25,11 @@ public class UsuarioController {
     private final UserRepository userRepository;
     private final UserService userService;
     private final Imc imc;
-    private final UsuarioMapper usuarioMapper;
 
-    public UsuarioController(UserRepository userRepository, UserService userService, Imc imc, UsuarioMapper usuarioMapper) {
+    public UsuarioController(UserRepository userRepository, UserService userService, Imc imc) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.imc = imc;
-        this.usuarioMapper = usuarioMapper;
     }
 
     @PostMapping()
@@ -39,21 +37,20 @@ public class UsuarioController {
         userService.createUser(userRequest);
         return ResponseEntity.ok("Usuário criado com sucesso!");
     }
-
     @GetMapping("/filtro-imc")
-    public ResponseEntity<List<UsuarioResponse>> filtrarUsuariosPorImc(@RequestParam String faixa) {
+    public ResponseEntity<List<User>> filtrarUsuariosPorImc(@RequestParam String faixa) {
+        List<User> todosUsuarios = userRepository.findAll();
 
-        List<UsuarioResponse> usuariosFiltrados = userRepository.findAll().stream()
+        List<User> usuariosFiltrados = todosUsuarios.stream()
                 .filter(user -> {
                     Double imcUsuario = imc.obterImcUsuario(user.getId());
-                    if (imcUsuario == null) return false;
-
+                    if (imcUsuario == null) {
+                        return false;
+                    }
                     String faixaUsuario = imc.classificarFaixaImc(imcUsuario);
                     return faixaUsuario != null && faixaUsuario.equalsIgnoreCase(faixa);
                 })
-                .map(usuarioMapper::toResponse)
-                .sorted((a, b) -> a.id().compareTo(b.id()))
-                .toList();
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(usuariosFiltrados);
     }
@@ -95,6 +92,15 @@ public class UsuarioController {
             @RequestBody UserRequest userRequest) {
         userService.atualizarUsuario(id, userRequest);
         return ResponseEntity.ok("Usuário atualizado com sucesso!");
+    }
+    
+    // PATCH /usuarios/{id} → atualiza parcialmente um usuário
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> atualizarParcialUsuario(
+            @PathVariable Long id,
+            @RequestBody UserPatchRequest userPatchRequest) {
+        userService.atualizarParcialUsuario(id, userPatchRequest);
+        return ResponseEntity.ok("Usuário atualizado parcialmente com sucesso!");
     }
     
     // DELETE /usuarios/{id} → remove um usuário
