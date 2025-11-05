@@ -2,6 +2,7 @@ package com.ProgWebII.biotrack.service;
 
 import com.ProgWebII.biotrack.dto.response.MedidaResponse;
 import com.ProgWebII.biotrack.dto.request.MeasureRequest;
+import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.repository.MeasureRepository;
@@ -64,26 +65,26 @@ public class MeasureService {
     }
 
     public void CreateMeasure(MeasureRequest measureRequest, Long userId) {
-        try{
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+        try {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
-        Measure measure = Measure.builder()
-                .measurementDate(measureRequest.measurementDate())
-                .weightKg(measureRequest.weightKg())
-                .heightCm(measureRequest.heightCm())
-                .waistCm(measureRequest.waistCm())
-                .hipCm(measureRequest.hipCm())
-                .chestCm(measureRequest.chestCm())
-                .armRightCm(measureRequest.armRightCm())
-                .armLeftCm(measureRequest.armLeftCm())
-                .thighRightCm(measureRequest.thighRightCm())
-                .thighLeftCm(measureRequest.thighLeftCm())
-                .bodyFatPercentage(measureRequest.bodyFatPercentage())
-                .user(user)
-                .build();
-        measureRepository.save(measure);
-        } catch(Exception e){
+            Measure measure = Measure.builder()
+                    .measurementDate(measureRequest.measurementDate())
+                    .weightKg(measureRequest.weightKg())
+                    .heightCm(measureRequest.heightCm())
+                    .waistCm(measureRequest.waistCm())
+                    .hipCm(measureRequest.hipCm())
+                    .chestCm(measureRequest.chestCm())
+                    .armRightCm(measureRequest.armRightCm())
+                    .armLeftCm(measureRequest.armLeftCm())
+                    .thighRightCm(measureRequest.thighRightCm())
+                    .thighLeftCm(measureRequest.thighLeftCm())
+                    .bodyFatPercentage(measureRequest.bodyFatPercentage())
+                    .user(user)
+                    .build();
+            measureRepository.save(measure);
+        } catch (Exception e) {
             throw new RuntimeException("Erro ao criar medida: " + e.getMessage());
         }
 

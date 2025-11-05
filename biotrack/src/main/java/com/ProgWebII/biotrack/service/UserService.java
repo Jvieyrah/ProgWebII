@@ -83,23 +83,15 @@ public class UserService {
                 user.getEmail()
         );
     }
-
-    //Lista todos os usuários sem medidas
-    public List<UsuarioSemMedidasResponse> listarTodosSemMedidas() {
-        List<User> usuarios = userRepository.findAll();
-
-        if (usuarios.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum usuário encontrado.");
-        }
-
-        return usuarios.stream()
-                .filter(Objects::nonNull)
-                .map(u -> new UsuarioSemMedidasResponse(
-                        u.getId(),
-                        u.getName(),
-                        u.getBirthDate(),
-                        u.getZipCode(),
-                        u.getEmail()
+    public List<UsuarioSemMedidasResponse> listarUsuariosSemMedidas() {
+        return userRepository.findUsersWithoutMeasures()
+                .stream()
+                .map(user -> new UsuarioSemMedidasResponse(
+                        user.getId(),
+                        user.getName(),
+                        user.getBirthDate(),
+                        user.getZipCode(),
+                        user.getEmail()
                 ))
                 .toList();
     }
