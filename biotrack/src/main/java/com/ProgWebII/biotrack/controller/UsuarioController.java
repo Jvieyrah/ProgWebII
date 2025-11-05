@@ -1,5 +1,6 @@
 package com.ProgWebII.biotrack.controller;
 
+import com.ProgWebII.biotrack.controller.documentation.UsuarioControllerDocs;
 import com.ProgWebII.biotrack.dto.response.BuscarUsuarioPorIdResponse;
 import com.ProgWebII.biotrack.dto.response.ListarTodosUsuariosResponse;
 import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
@@ -20,7 +21,7 @@ import com.ProgWebII.biotrack.dto.request.UserRequest;
 @RestController
 @RequestMapping("/usuarios")/*
 mapeamento de rota base (ou endpoint base) de um controller REST no Spring Boot.*/
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerDocs {
 
     private final UserRepository userRepository;
     private final UserService userService;
