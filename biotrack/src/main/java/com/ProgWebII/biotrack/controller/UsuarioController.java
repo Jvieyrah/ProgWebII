@@ -6,7 +6,6 @@ import com.ProgWebII.biotrack.dto.response.ListarTodosUsuariosResponse;
 import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
 import com.ProgWebII.biotrack.dto.response.UsuarioSemMedidasResponse;
 import com.ProgWebII.biotrack.mapper.UsuarioMapper;
-import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.model.Imc;
 import com.ProgWebII.biotrack.repository.UserRepository;
 import com.ProgWebII.biotrack.service.UserService;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ProgWebII.biotrack.dto.request.UserRequest;
 
@@ -74,7 +72,7 @@ public class UsuarioController implements UsuarioControllerDocs {
     //GET /usuarios/sem-medidas → lista todos os usuários sem medidas
     @GetMapping("/sem-medidas")
     public ResponseEntity<List<UsuarioSemMedidasResponse>> listarTodosSemMedidas() {
-        return ResponseEntity.ok(userService.listarTodosSemMedidas());
+        return ResponseEntity.ok(userService.listarUsuariosSemMedidas());
     }
 
     //GET /usuarios/{id}/todas-medidas → usuário + todas as medidas
@@ -88,6 +86,7 @@ public class UsuarioController implements UsuarioControllerDocs {
     public ResponseEntity<UsuarioResponse> trazerUsuarioComUltimaMedida(@PathVariable Long id) {
         return ResponseEntity.ok(userService.trazerUsuarioPorIdComUltimaMedida(id));
     }
+
     
     // PUT /usuarios/{id} → atualiza completamente um usuário
     @PutMapping("/{id}")
