@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ProgWebII.biotrack.dto.request.UserRequest;
+import com.ProgWebII.biotrack.dto.request.UserPatchRequest;
 
 @RestController
 @RequestMapping("/usuarios")/*
@@ -91,6 +92,15 @@ public class UsuarioController {
             @RequestBody UserRequest userRequest) {
         userService.atualizarUsuario(id, userRequest);
         return ResponseEntity.ok("Usuário atualizado com sucesso!");
+    }
+    
+    // PATCH /usuarios/{id} → atualiza parcialmente um usuário
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> atualizarUsuarioParcialmente(
+            @PathVariable Long id,
+            @RequestBody UserPatchRequest userPatchRequest) {
+        userService.atualizarUsuarioParcialmente(id, userPatchRequest);
+        return ResponseEntity.ok("Usuário atualizado parcialmente com sucesso!");
     }
     
     // DELETE /usuarios/{id} → remove um usuário

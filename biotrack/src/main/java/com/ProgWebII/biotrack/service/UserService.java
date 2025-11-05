@@ -2,6 +2,7 @@ package com.ProgWebII.biotrack.service;
 
 import com.ProgWebII.biotrack.dto.*;
 import com.ProgWebII.biotrack.dto.request.UserRequest;
+import com.ProgWebII.biotrack.dto.request.UserPatchRequest;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.repository.UserRepository;
@@ -212,6 +213,38 @@ public class UserService {
         validarCamposObrigatorios(user);
         
         // Salva as alterações
+        userRepository.save(user);
+    }
+    
+    // Atualiza parcialmente um usuário existente (PATCH)
+    public void atualizarUsuarioParcialmente(Long id, UserPatchRequest userPatchRequest) {
+        validarId(id, "ID do usuário");
+        
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + id));
+        
+        if (userPatchRequest.name() != null && !userPatchRequest.name().isBlank()) {
+            user.setName(userPatchRequest.name());
+        }
+        
+        if (userPatchRequest.birthDate() != null) {
+            user.setBirthDate(userPatchRequest.birthDate());
+        }
+        
+        if (userPatchRequest.zipCode() != null && !userPatchRequest.zipCode().isBlank()) {
+            user.setZipCode(userPatchRequest.zipCode());
+        }
+        
+        if (userPatchRequest.email() != null && !userPatchRequest.email().isBlank()) {
+            user.setEmail(userPatchRequest.email());
+        }
+        
+        if (userPatchRequest.password() != null && !userPatchRequest.password().isBlank()) {
+            user.setPassword(hashPassword(userPatchRequest.password()));
+        }
+        
+        validarCamposObrigatorios(user);
+        
         userRepository.save(user);
     }
     
