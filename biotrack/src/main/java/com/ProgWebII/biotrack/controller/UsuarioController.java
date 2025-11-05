@@ -96,10 +96,10 @@ public class UsuarioController {
     
     // PATCH /usuarios/{id} → atualiza parcialmente um usuário
     @PatchMapping("/{id}")
-    public ResponseEntity<String> atualizarUsuarioParcialmente(
+    public ResponseEntity<String> atualizarParcialUsuario(
             @PathVariable Long id,
             @RequestBody UserPatchRequest userPatchRequest) {
-        userService.atualizarUsuarioParcialmente(id, userPatchRequest);
+        userService.atualizarParcialUsuario(id, userPatchRequest);
         return ResponseEntity.ok("Usuário atualizado parcialmente com sucesso!");
     }
     

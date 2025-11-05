@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
- * DTO para atualização parcial de usuário (PATCH).
+ * DTO para atualização parcial de usuário.
  * Todos os campos são opcionais - apenas os campos fornecidos serão atualizados.
  */
 public record UserPatchRequest(
@@ -31,5 +31,3 @@ public record UserPatchRequest(
 ) {
     // Record para atualização parcial - todos os campos são opcionais
 }
-
-

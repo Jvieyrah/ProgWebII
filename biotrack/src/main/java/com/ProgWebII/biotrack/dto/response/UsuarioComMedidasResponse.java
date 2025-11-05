@@ -1,4 +1,4 @@
-package com.ProgWebII.biotrack.dto;
+package com.ProgWebII.biotrack.dto.response;
 
 import java.time.LocalDate;
 import java.util.List;
