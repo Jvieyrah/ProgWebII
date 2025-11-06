@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import com.ProgWebII.biotrack.dto.request.UserRequest;
+import com.ProgWebII.biotrack.dto.request.UserPatchRequest;
 
 @RestController
 @RequestMapping("/usuarios")/*
@@ -95,6 +96,15 @@ public class UsuarioController implements UsuarioControllerDocs {
             @RequestBody UserRequest userRequest) {
         userService.atualizarUsuario(id, userRequest);
         return ResponseEntity.ok("Usuário atualizado com sucesso!");
+    }
+    
+    // PATCH /usuarios/{id} → atualiza parcialmente um usuário
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> atualizarParcialUsuario(
+            @PathVariable Long id,
+            @RequestBody UserPatchRequest userPatchRequest) {
+        userService.atualizarParcialUsuario(id, userPatchRequest);
+        return ResponseEntity.ok("Usuário atualizado parcialmente com sucesso!");
     }
     
     // DELETE /usuarios/{id} → remove um usuário
