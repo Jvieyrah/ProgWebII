@@ -39,5 +39,20 @@ public class MeasureController implements MeasureControllerDocs {
         MedidaResponse medida = measureService.buscarMedidaPorId(usuarioId, medidaId);
         return ResponseEntity.ok(medida);
     }
-
+    
+    // PUT /medidas/{medidaId} → atualiza completamente uma medida
+    @PutMapping("/{medidaId}")
+    public ResponseEntity<String> atualizarMedida(
+            @PathVariable Long medidaId,
+            @RequestBody MeasureRequest medidaRequest) {
+        measureService.atualizarMedida(medidaId, medidaRequest);
+        return ResponseEntity.ok("Medida atualizada com sucesso!");
+    }
+    
+    // DELETE /medidas/{medidaId} → remove uma medida
+    @DeleteMapping("/{medidaId}")
+    public ResponseEntity<String> removerMedida(@PathVariable Long medidaId) {
+        measureService.removerMedida(medidaId);
+        return ResponseEntity.ok("Medida removida com sucesso!");
+    }
 }
