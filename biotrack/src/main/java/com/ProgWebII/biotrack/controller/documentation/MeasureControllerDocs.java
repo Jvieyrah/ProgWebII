@@ -17,13 +17,12 @@ public interface MeasureControllerDocs {
 
     @Operation(
             summary = "Cria uma nova medida",
-            description = "Cria uma nova medida para o usuário existente."
+            description = "Cria uma nova medida para um usuário já existente."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Medida criada com sucesso."),
-            @ApiResponse(responseCode = "400", description = "Dados da medida inválidos."),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
-            @ApiResponse(responseCode = "500", description = "Erro interno ao criar medida.")
+            @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos."),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado.")
     })
     @PostMapping("/{userId}")
     ResponseEntity<String> createMeasure(
@@ -32,11 +31,11 @@ public interface MeasureControllerDocs {
     );
 
     @Operation(
-            summary = "Lista todas as medidas de um usuário",
+            summary = "Lista todas as medidas do usuário",
             description = "Retorna todas as medidas cadastradas para um usuário específico."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Medidas encontradas.",
+            @ApiResponse(responseCode = "200", description = "Lista de medidas retornada com sucesso.",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MedidaResponse.class))),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado.")
@@ -47,8 +46,8 @@ public interface MeasureControllerDocs {
     );
 
     @Operation(
-            summary = "Busca uma medida específica de um usuário",
-            description = "Retorna os dados de uma medida específica do usuário pelo ID da medida."
+            summary = "Busca uma medida específica",
+            description = "Retorna uma medida específica de um usuário pelo seu ID."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Medida encontrada.",
@@ -59,6 +58,34 @@ public interface MeasureControllerDocs {
     @GetMapping("/{usuarioId}/medidas/{medidaId}")
     ResponseEntity<MedidaResponse> buscarMedidaPorId(
             @Parameter(description = "ID do usuário") @PathVariable Long usuarioId,
+            @Parameter(description = "ID da medida") @PathVariable Long medidaId
+    );
+
+    @Operation(
+            summary = "Atualiza uma medida",
+            description = "Atualiza completamente uma medida existente pelo ID da medida."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Medida atualizada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos."),
+            @ApiResponse(responseCode = "404", description = "Medida não encontrada.")
+    })
+    @PutMapping("/{medidaId}")
+    ResponseEntity<String> atualizarMedida(
+            @Parameter(description = "ID da medida") @PathVariable Long medidaId,
+            @RequestBody MeasureRequest medidaRequest
+    );
+
+    @Operation(
+            summary = "Remove uma medida",
+            description = "Exclui uma medida existente pelo ID da medida."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Medida removida com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Medida não encontrada.")
+    })
+    @DeleteMapping("/{medidaId}")
+    ResponseEntity<String> removerMedida(
             @Parameter(description = "ID da medida") @PathVariable Long medidaId
     );
 }
