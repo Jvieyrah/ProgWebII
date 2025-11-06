@@ -2,6 +2,7 @@ package com.ProgWebII.biotrack.service;
 
 import com.ProgWebII.biotrack.dto.response.MedidaResponse;
 import com.ProgWebII.biotrack.dto.request.MeasureRequest;
+import com.ProgWebII.biotrack.dto.response.UsuarioResponse;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.repository.MeasureRepository;
@@ -64,7 +65,7 @@ public class MeasureService {
     }
 
     public void CreateMeasure(MeasureRequest measureRequest, Long userId) {
-        try{
+        try {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
@@ -83,7 +84,7 @@ public class MeasureService {
                     .user(user)
                     .build();
             measureRepository.save(measure);
-        } catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Erro ao criar medida: " + e.getMessage());
         }
     }

@@ -1,8 +1,8 @@
 package com.ProgWebII.biotrack.service;
 
 import com.ProgWebII.biotrack.dto.request.UserRequest;
+import com.ProgWebII.biotrack.dto.request.UserPatchRequest;
 import com.ProgWebII.biotrack.dto.response.*;
-import com.ProgWebII.biotrack.mapper.UsuarioMapper;
 import com.ProgWebII.biotrack.model.Measure;
 import com.ProgWebII.biotrack.model.User;
 import com.ProgWebII.biotrack.repository.UserRepository;
@@ -19,12 +19,11 @@ import java.util.Objects;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UsuarioMapper  usuarioMapper;
+
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.usuarioMapper = usuarioMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -84,23 +83,15 @@ public class UserService {
                 user.getEmail()
         );
     }
-
-    //Lista todos os usuários sem medidas
-    public List<UsuarioSemMedidasResponse> listarTodosSemMedidas() {
-        List<User> usuarios = userRepository.findAll();
-
-        if (usuarios.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum usuário encontrado.");
-        }
-
-        return usuarios.stream()
-                .filter(Objects::nonNull)
-                .map(u -> new UsuarioSemMedidasResponse(
-                        u.getId(),
-                        u.getName(),
-                        u.getBirthDate(),
-                        u.getZipCode(),
-                        u.getEmail()
+    public List<UsuarioSemMedidasResponse> listarUsuariosSemMedidas() {
+        return userRepository.findUsersWithoutMeasures()
+                .stream()
+                .map(user -> new UsuarioSemMedidasResponse(
+                        user.getId(),
+                        user.getName(),
+                        user.getBirthDate(),
+                        user.getZipCode(),
+                        user.getEmail()
                 ))
                 .toList();
     }
@@ -211,6 +202,42 @@ public class UserService {
         }
         
         // Valida os campos obrigatórios
+        validarCamposObrigatorios(user);
+        
+        // Salva as alterações
+        userRepository.save(user);
+    }
+    
+    // Atualiza parcialmente um usuário existente (PATCH)
+    public void atualizarParcialUsuario(Long id, UserPatchRequest userPatchRequest) {
+        validarId(id, "ID do usuário");
+        
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com o ID: " + id));
+        
+        // Atualiza apenas os campos fornecidos (não nulos)
+        if (userPatchRequest.name() != null && !userPatchRequest.name().isBlank()) {
+            user.setName(userPatchRequest.name());
+        }
+        
+        if (userPatchRequest.birthDate() != null) {
+            user.setBirthDate(userPatchRequest.birthDate());
+        }
+        
+        if (userPatchRequest.zipCode() != null && !userPatchRequest.zipCode().isBlank()) {
+            user.setZipCode(userPatchRequest.zipCode());
+        }
+        
+        if (userPatchRequest.email() != null && !userPatchRequest.email().isBlank()) {
+            user.setEmail(userPatchRequest.email());
+        }
+        
+        // Se a senha foi fornecida, atualiza a senha com hash
+        if (userPatchRequest.password() != null && !userPatchRequest.password().isBlank()) {
+            user.setPassword(hashPassword(userPatchRequest.password()));
+        }
+        
+        // Valida os campos obrigatórios após a atualização parcial
         validarCamposObrigatorios(user);
         
         // Salva as alterações

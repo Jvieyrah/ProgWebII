@@ -1,5 +1,6 @@
 package com.ProgWebII.biotrack.controller;
 
+import com.ProgWebII.biotrack.controller.documentation.MeasureControllerDocs;
 import com.ProgWebII.biotrack.dto.response.MedidaResponse;
 import com.ProgWebII.biotrack.dto.request.MeasureRequest;
 import com.ProgWebII.biotrack.service.MeasureService;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/medidas")
-public class MeasureController {
+public class MeasureController implements MeasureControllerDocs {
 
   private final MeasureService measureService;
 
